@@ -1,3 +1,8 @@
+// home_page.dart - Tako Lansbergen 2020/02/22
+//
+// Hoofdpagina met menuknoppen
+// overerft van StatefulWidget
+
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

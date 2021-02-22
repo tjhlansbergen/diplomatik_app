@@ -1,3 +1,8 @@
+// login_page.dart - Tako Lansbergen 2020/02/22
+//
+// App pagina met inlog-formulier
+// overerft van StatefulWidget
+
 import 'package:flutter/material.dart';
 import 'package:diplomatik_app/pages/home_page.dart';
 
