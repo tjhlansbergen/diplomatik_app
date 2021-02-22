@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:diplomatik_app/pages/home_page.dart';
+import 'package:diplomatik_app/pages/login_page.dart';
 
 void main() {
   runApp(AppRoot());
@@ -15,7 +15,7 @@ class AppRoot extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(title: 'Diplomatik'),
+      home: LoginPage(),
     );
   }
 }
