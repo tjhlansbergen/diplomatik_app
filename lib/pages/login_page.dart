@@ -44,10 +44,7 @@ class _LoginPageState extends State<LoginPage> {
             decoration: BoxDecoration(
                 color: Colors.blue, borderRadius: BorderRadius.circular(5)),
             child: FlatButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => HomePage()));
-              },
+              onPressed: _login,
               child: Text(
                 'Inloggen',
                 style: TextStyle(color: Colors.white, fontSize: 20),
@@ -57,5 +54,9 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+  }
+
+  void _login() {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
   }
 }

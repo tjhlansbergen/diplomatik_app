@@ -3,7 +3,9 @@
 // Hoofd-loop van de app en root-widget
 // overerft van StateflessWidget
 
+import 'package:diplomatik_app/providers/identity_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:diplomatik_app/pages/login_page.dart';
 
 void main() {
@@ -14,13 +16,19 @@ class AppRoot extends StatelessWidget {
   // Root Widget van de app
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Diplomatik',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<IdentityProvider>(
+            create: (context) => IdentityProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Diplomatik',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: LoginPage(),
       ),
-      home: LoginPage(),
     );
   }
 }
