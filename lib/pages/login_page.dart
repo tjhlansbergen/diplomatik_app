@@ -14,26 +14,25 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
+// State van de inlogpagine, met opgegeven inloggegevens en eventuele foutmelding
 class _LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   String _message = "";
 
-  void _setMessage(String text) {
-    setState(() {
-      _message = text;
-    });
-  }
-
+  // build methode van de pagina
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // toon balk met app-naam
         title: Text("Diplomatik"),
       ),
       body: Column(
+        // centreer widgets
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          // invoervelden voor gebruikernaam/wachtwoord
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: TextField(
@@ -56,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Container(
+            // inlogknop, roept _login() methode aan
             decoration: BoxDecoration(
                 color: Colors.blue, borderRadius: BorderRadius.circular(5)),
             child: FlatButton(
@@ -67,6 +67,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Padding(
+            // ruimte voor het tonen van foutmelding, standaard leeg
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 50),
             child: Text(_message, style: TextStyle(color: Colors.red)),
           ),
@@ -75,6 +76,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  // variablen met ingevoerde gegevens legen bij sluiten inlogpagina,
+  // door de dispose methode te overriden
   @override
   void dispose() {
     usernameController.dispose();
@@ -82,18 +85,39 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  // private async methode voor inloggen op de APO
   Future<void> _login() async {
-    // Log in via de API
+    // roep identity provider aan om gebruiker op te halen
+    // met de opgegeven inloggevens, en wacht daarop
     var identityProvider = context.read<IdentityProvider>();
-    var result = await identityProvider.fetchUser(
-        usernameController.text, passwordController.text);
+    //var result = await identityProvider.fetchUser(
+    //  usernameController.text, passwordController.text);
 
-    // TODO juiste error tonen
-    if (result == true) {
-      _setMessage(""); // eventuele error tekst verwijderen
+    identityProvider
+        .fetchUser(usernameController.text, passwordController.text)
+        .then((_) {
+      // inloggen gelukt,
+
+      // wachtwoordveld legen
+      passwordController.clear();
+
+      // eventueel eerder getoonde foutmelding legen
+      setState(() {
+        _message = "";
+      });
+
+      // en toon de de home-page
       Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
-    } else {
-      _setMessage("Inloggen mislukt");
-    }
+    }).catchError((error) {
+      // inloggen niet gelukt,
+
+      // wachtwoordveld legen
+      passwordController.clear();
+
+      // en toon foutmelding
+      setState(() {
+        _message = "Inloggen mislukt, " + error;
+      });
+    });
   }
 }

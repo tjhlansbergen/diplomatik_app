@@ -11,25 +11,28 @@ import 'package:diplomatik_app/common/constants.dart';
 class IdentityProvider extends ChangeNotifier {
   User currentUser;
 
-  Future<bool> fetchUser(String username, String password) async {
+  Future<void> fetchUser(String username, String password) async {
     try {
       var credentials = UserCredentials(username: username, password: password);
 
       var uri = Uri.http(Constants.baseURL, 'api/login');
 
-      final response = await http.post(uri,
-          headers: <String, String>{
-            "content-type": "application/json",
-          },
-          body: jsonEncode(credentials.toJson()));
+      final response = await http
+          .post(uri,
+              headers: <String, String>{
+                "content-type": "application/json",
+              },
+              body: jsonEncode(credentials.toJson()))
+          .timeout(Duration(seconds: 10));
 
       if (response.statusCode == 200) {
         currentUser = User.fromJson(jsonDecode(response.body));
         return true;
+      } else {
+        return Future.error("inloggevens incorrect");
       }
-      return false;
     } on Exception {
-      return false;
+      return Future.error("server niet bereikbaar");
     }
   }
 }
