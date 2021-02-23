@@ -1,8 +1,9 @@
-import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
-import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:diplomatik_app/models/user.dart';
 import 'package:diplomatik_app/models/user_credentials.dart';
 import 'package:diplomatik_app/common/constants.dart';
@@ -10,23 +11,25 @@ import 'package:diplomatik_app/common/constants.dart';
 class IdentityProvider extends ChangeNotifier {
   User currentUser;
 
-  Future<User> fetchUser() async {
+  Future<bool> fetchUser(String username, String password) async {
     try {
-      var credentials =
-          UserCredentials(username: "inge@rotterdam.nl", password: "novi!0033");
+      var credentials = UserCredentials(username: username, password: password);
 
-      final response = await http.post((Constants.baseURL + "login"),
+      var uri = Uri.http(Constants.baseURL, 'api/login');
+
+      final response = await http.post(uri,
           headers: <String, String>{
             "content-type": "application/json",
           },
-          body: credentials.toJson());
+          body: jsonEncode(credentials.toJson()));
+
       if (response.statusCode == 200) {
-        return User.fromJson(jsonDecode(response.body));
-      } else {
-        return null;
+        currentUser = User.fromJson(jsonDecode(response.body));
+        return true;
       }
-    } on SocketException {
-      return null;
+      return false;
+    } on Exception {
+      return false;
     }
   }
 }

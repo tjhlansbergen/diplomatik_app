@@ -4,7 +4,10 @@
 // overerft van StatefulWidget
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:diplomatik_app/pages/home_page.dart';
+import 'package:diplomatik_app/providers/identity_provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,6 +15,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  String _message = "";
+
+  void _setMessage(String text) {
+    setState(() {
+      _message = text;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,8 +35,9 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+            padding: EdgeInsets.symmetric(horizontal: 25),
             child: TextField(
+              controller: usernameController,
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Gebruikersnaam',
@@ -33,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
             child: TextField(
+              controller: passwordController,
               obscureText: true,
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -51,12 +66,34 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 50),
+            child: Text(_message, style: TextStyle(color: Colors.red)),
+          ),
         ],
       ),
     );
   }
 
-  void _login() {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    // Log in via de API
+    var identityProvider = context.read<IdentityProvider>();
+    var result = await identityProvider.fetchUser(
+        usernameController.text, passwordController.text);
+
+    // TODO juiste error tonen
+    if (result == true) {
+      _setMessage(""); // eventuele error tekst verwijderen
+      Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+    } else {
+      _setMessage("Inloggen mislukt");
+    }
   }
 }

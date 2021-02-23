@@ -4,6 +4,9 @@
 // overerft van StatefulWidget
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:diplomatik_app/providers/identity_provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -38,7 +41,10 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text("Welkom"),
+        title: Text("Welkom " +
+            Provider.of<IdentityProvider>(context, listen: false)
+                .currentUser
+                .userName),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
