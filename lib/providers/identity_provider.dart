@@ -20,13 +20,12 @@ class IdentityProvider extends ChangeNotifier {
   // Methode voor ophalen van gebruiker a.d.h.v. inloggegevens
   Future<void> getIdentity(String username, String password) async {
     try {
-      // maak credentials en url
+      // maak credentials
       var credentials = Credentials(username: username, password: password);
-      var uri = Uri.http(Constants.baseURL, 'api/login');
 
       // roep login endpoint asynchroon aan
       final response = await http
-          .post(uri,
+          .post(Constants.loginEndpoint,
               headers: <String, String>{
                 "content-type": "application/json",
               },
