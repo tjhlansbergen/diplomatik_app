@@ -1,10 +1,10 @@
-// user.dart - Tako Lansbergen 2020/02/23
+// identity.dart - Tako Lansbergen 2020/02/23
 //
 // Model voor een gebruiker
 
 import 'dart:ui'; // tbv hashValues
 
-class User {
+class Identity {
   // Properties
   int userId;
   String userName;
@@ -12,7 +12,7 @@ class User {
   String token;
 
   // Constructor
-  User({
+  Identity({
     this.userId,
     this.userName,
     this.customerId,
@@ -22,12 +22,12 @@ class User {
   // Methode voor het omzetten naar tekenreeks
   @override
   String toString() {
-    return 'User(userId: $userId, userName: $userName, customerId: $customerId, token: $token)';
+    return 'Identity(userId: $userId, userName: $userName, customerId: $customerId, token: $token)';
   }
 
   // Methode deserializatie vanaf JSON object
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory Identity.fromJson(Map<String, dynamic> json) {
+    return Identity(
       userId: json['user_id'] as int,
       userName: json['user_name'] as String,
       customerId: json['customer_id'] as int,
@@ -48,7 +48,7 @@ class User {
   // Override de equals methode voor het verglijken van twee User objecten
   @override
   bool operator ==(Object o) =>
-      o is User &&
+      o is Identity &&
       identical(o.userId, userId) &&
       identical(o.userName, userName) &&
       identical(o.customerId, customerId) &&

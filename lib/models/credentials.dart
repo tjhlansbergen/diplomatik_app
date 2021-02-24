@@ -1,14 +1,14 @@
-// user_credentials.dart - Tako Lansbergen 2020/02/23
+// credentials.dart - Tako Lansbergen 2020/02/23
 //
 // POCO-klasse voor de inloggegevens van een gebruiker
 
-class UserCredentials {
+class Credentials {
   // Properties
   String username;
   String password;
 
   // Contructor
-  UserCredentials({this.username, this.password});
+  Credentials({this.username, this.password});
 
   // Methode voor serializatie naar JSON
   Map<String, dynamic> toJson() {

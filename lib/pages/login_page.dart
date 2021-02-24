@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
     //  usernameController.text, passwordController.text);
 
     identityProvider
-        .fetchUser(usernameController.text, passwordController.text)
+        .getIdentity(usernameController.text, passwordController.text)
         .then((_) {
       // inloggen gelukt,
 
