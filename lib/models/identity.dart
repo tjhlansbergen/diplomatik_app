@@ -9,6 +9,7 @@ class Identity {
   int userId;
   String userName;
   int customerId;
+  bool canAddUsers;
   String token;
 
   // Constructor
@@ -16,13 +17,14 @@ class Identity {
     this.userId,
     this.userName,
     this.customerId,
+    this.canAddUsers,
     this.token,
   });
 
   // Methode voor het omzetten naar tekenreeks
   @override
   String toString() {
-    return 'Identity(userId: $userId, userName: $userName, customerId: $customerId, token: $token)';
+    return 'Identity(userId: $userId, userName: $userName, customerId: $customerId, canAddUsers: $canAddUsers, token: $token)';
   }
 
   // Methode deserializatie vanaf JSON object
@@ -31,18 +33,9 @@ class Identity {
       userId: json['user_id'] as int,
       userName: json['user_name'] as String,
       customerId: json['customer_id'] as int,
+      canAddUsers: json['can_add_users'] as bool,
       token: json['token'] as String,
     );
-  }
-
-  // Methode voor serializatie naar JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'user_id': userId,
-      'user_name': userName,
-      'customer_id': customerId,
-      'token': token,
-    };
   }
 
   // Override de equals methode voor het verglijken van twee User objecten
@@ -52,9 +45,11 @@ class Identity {
       identical(o.userId, userId) &&
       identical(o.userName, userName) &&
       identical(o.customerId, customerId) &&
+      identical(o.canAddUsers, canAddUsers) &&
       identical(o.token, token);
 
   // Override hashcode voor het maken van hashcode van samengestelde properties
   @override
-  int get hashCode => hashValues(userId, userName, customerId, token);
+  int get hashCode =>
+      hashValues(userId, userName, customerId, canAddUsers, token);
 }
