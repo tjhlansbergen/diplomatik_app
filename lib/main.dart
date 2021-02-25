@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import 'package:diplomatik_app/pages/login_page.dart';
 import 'package:diplomatik_app/providers/identity_provider.dart';
+import 'package:diplomatik_app/providers/qualification_provider.dart';
 
 // main functie van de app, start AppRoot
 void main() {
@@ -25,6 +26,8 @@ class AppRoot extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<IdentityProvider>(
             create: (context) => IdentityProvider()),
+        ChangeNotifierProvider<QualificationProvider>(
+            create: (context) => QualificationProvider()),
       ],
       // root-niveau van de UI, met thema en eerst getoonde pagina (login)
       child: MaterialApp(

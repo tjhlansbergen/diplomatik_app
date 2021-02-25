@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:diplomatik_app/pages/qualifications_page.dart';
 import 'package:diplomatik_app/providers/identity_provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,7 +16,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          // header-balk met inlognaam en uitlogknop
+          // header-balk met app-naam uitlogknop
           title: Text("Diplomatik"),
         ),
         body: Padding(
@@ -30,7 +31,10 @@ class HomePage extends StatelessWidget {
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: ElevatedButton.icon(
-                            onPressed: _buttonDummy,
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => QualificationsPage())),
                             icon: Icon(Icons.school),
                             label: Text("Kwalificaties"))),
                     Padding(
