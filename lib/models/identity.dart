@@ -9,6 +9,7 @@ class Identity {
   int userId;
   String userName;
   int customerId;
+  String customerName;
   bool canAddUsers;
   String token;
 
@@ -17,6 +18,7 @@ class Identity {
     this.userId,
     this.userName,
     this.customerId,
+    this.customerName,
     this.canAddUsers,
     this.token,
   });
@@ -24,7 +26,7 @@ class Identity {
   // Methode voor het omzetten naar tekenreeks
   @override
   String toString() {
-    return 'Identity(userId: $userId, userName: $userName, customerId: $customerId, canAddUsers: $canAddUsers, token: $token)';
+    return 'Identity(userId: $userId, userName: $userName, customerId: $customerId, customerName: $customerName, canAddUsers: $canAddUsers, token: $token)';
   }
 
   // Methode deserializatie vanaf JSON object
@@ -33,6 +35,7 @@ class Identity {
       userId: json['user_id'] as int,
       userName: json['user_name'] as String,
       customerId: json['customer_id'] as int,
+      customerName: json['customer_name'] as String,
       canAddUsers: json['can_add_users'] as bool,
       token: json['token'] as String,
     );
@@ -45,11 +48,12 @@ class Identity {
       identical(o.userId, userId) &&
       identical(o.userName, userName) &&
       identical(o.customerId, customerId) &&
+      identical(o.customerName, customerName) &&
       identical(o.canAddUsers, canAddUsers) &&
       identical(o.token, token);
 
   // Override hashcode voor het maken van hashcode van samengestelde properties
   @override
-  int get hashCode =>
-      hashValues(userId, userName, customerId, canAddUsers, token);
+  int get hashCode => hashValues(
+      userId, userName, customerId, customerName, canAddUsers, token);
 }
