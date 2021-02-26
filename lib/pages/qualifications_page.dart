@@ -23,28 +23,57 @@ class _QualificationsPageState extends State<QualificationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          // header-balk met paginanaam
-          title: Text("Kwalificaties"),
-        ),
-        body: FutureBuilder<List<Qualification>>(
-          future: downloadData(), // function where you call your api
-          builder: (BuildContext context,
-              AsyncSnapshot<List<Qualification>> snapshot) {
-            // AsyncSnapshot<Your object type>
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: Text('Laden...'));
-            } else {
-              if (snapshot.hasError)
-                return Center(child: Text(snapshot.error.toString()));
-              else
-                return Center(
-                    child: QualificationList(
-                        items: snapshot
-                            .data)); // snapshot.data  :- get your object which is pass from your downloadData() function
-            }
-          },
-        ));
+      appBar: AppBar(
+        // header-balk met paginanaam
+        title: Text("Kwalificaties"),
+      ),
+      body: FutureBuilder<List<Qualification>>(
+        future: downloadData(), // function where you call your api
+        builder: (BuildContext context,
+            AsyncSnapshot<List<Qualification>> snapshot) {
+          // AsyncSnapshot<Your object type>
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: Text('Laden...'));
+          } else {
+            if (snapshot.hasError)
+              return Center(child: Text(snapshot.error.toString()));
+            else
+              return QualificationList(items: snapshot.data);
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: _showNewQualificationDialog,
+      ),
+    );
+  }
+
+  _showNewQualificationDialog() {
+    showDialog(
+        context: context,
+        builder: (_) => new Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Kies uit lijst',
+                          style: TextStyle(color: Colors.blue))),
+                  Divider(),
+                  FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Maak handmatig',
+                          style: TextStyle(color: Colors.blue))),
+                ],
+              ),
+            ));
   }
 }
 
@@ -64,7 +93,7 @@ class QualificationList extends StatelessWidget {
               child: SizedBox(
                   child: Container(
                 child: Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
