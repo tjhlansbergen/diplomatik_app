@@ -31,8 +31,8 @@ class IdentityProvider extends ChangeNotifier {
               },
               body: jsonEncode(credentials.toJson()))
           .timeout(Duration(
-              seconds:
-                  10)); // verkort de default timeout, inloggen mag niet langer dan 10s duren
+              seconds: Constants
+                  .defaultTimeout)); // verkort de default timeout, inloggen mag niet langer dan 10s duren
 
       // check de response, deserialiseer de gegevens indien OK
       if (response.statusCode == 200) {
