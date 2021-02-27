@@ -148,6 +148,9 @@ class QualificationCard extends StatelessWidget {
                               padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                               child: Text("\u2022 " + _qualification.courses[index].name));
                         }),
+                    SizedBox(
+                      height: 24.0,
+                    ),
                   ],
                 ))));
   }

@@ -85,7 +85,7 @@ class QualificationProvider {
   }
 
   // Methode voor koppelen van kwalificatie
-  Future<List<Qualification>> addQualification(BuildContext context, int id) async {
+  Future<void> addQualification(BuildContext context, int id) async {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
 
@@ -104,7 +104,7 @@ class QualificationProvider {
   }
 
   // Methode voor koppelen van kwalificatie
-  Future<List<Qualification>> removeQualification(BuildContext context, int id) async {
+  Future<void> removeQualification(BuildContext context, int id) async {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
 
@@ -114,6 +114,30 @@ class QualificationProvider {
       await http.delete(uri, headers: {
         'Authorization': 'Bearer $token',
       }).timeout(Duration(seconds: Constants.defaultTimeout));
+
+      // fire and forget, we wachten niet op het eventuele resultaat,
+      // en laten het aan de server over om te bepalen of het request wel/niet uitgevoerd wordt
+    } on Exception {
+      // vang exceptions af en negeer ze
+    }
+  }
+
+  // Methode voor koppelen van kwalificatie
+  Future<void> createQualification(BuildContext context, Qualification qualification) async {
+    try {
+      var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
+
+      var test = jsonEncode(qualification.toJson());
+
+      // roep login endpoint asynchroon aan
+      await http
+          .post(Constants.qualificationsEndpoint,
+              headers: {
+                'Authorization': 'Bearer $token',
+                "content-type": "application/json",
+              },
+              body: jsonEncode(qualification.toJson()))
+          .timeout(Duration(seconds: Constants.defaultTimeout));
 
       // fire and forget, we wachten niet op het eventuele resultaat,
       // en laten het aan de server over om te bepalen of het request wel/niet uitgevoerd wordt

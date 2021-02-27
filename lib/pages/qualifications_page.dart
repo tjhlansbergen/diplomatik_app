@@ -9,6 +9,7 @@ import 'package:diplomatik_app/models/qualification.dart';
 import 'package:diplomatik_app/providers/qualification_provider.dart';
 import 'package:diplomatik_app/pages/qualification_page.dart';
 import 'package:diplomatik_app/pages/qualification_select_page.dart';
+import 'package:diplomatik_app/pages/qualification_create_page.dart';
 
 class QualificationsPage extends StatefulWidget {
   @override
@@ -68,6 +69,8 @@ class _QualificationsPageState extends State<QualificationsPage> {
                   FlatButton(
                       onPressed: () {
                         Navigator.of(context).pop();
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => QualificationCreatePage()))
+                            .then((_) => setState(() => {}));
                       },
                       child: Text('Maak handmatig', style: TextStyle(color: Colors.blue))),
                 ],

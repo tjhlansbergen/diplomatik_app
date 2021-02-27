@@ -16,8 +16,8 @@ class LoginPage extends StatefulWidget {
 
 // State van de inlogpagine, met opgegeven inloggegevens en eventuele foutmelding
 class _LoginPageState extends State<LoginPage> {
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
   String _message = "";
 
   // build methode van de pagina
@@ -36,28 +36,23 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: TextField(
-              controller: usernameController,
+              controller: _usernameController,
               decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Gebruikersnaam',
-                  hintText: 'Voer uw gebruikersnaam in'),
+                  border: OutlineInputBorder(), labelText: 'Gebruikersnaam', hintText: 'Voer uw gebruikersnaam in'),
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
             child: TextField(
-              controller: passwordController,
+              controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Wachtwoord',
-                  hintText: 'Voer uw wachtwoord in'),
+                  border: OutlineInputBorder(), labelText: 'Wachtwoord', hintText: 'Voer uw wachtwoord in'),
             ),
           ),
           Container(
             // inlogknop, roept _login() methode aan
-            decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(5)),
+            decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(5)),
             child: FlatButton(
               onPressed: _login,
               child: Text(
@@ -80,8 +75,8 @@ class _LoginPageState extends State<LoginPage> {
   // door de dispose methode te overriden
   @override
   void dispose() {
-    usernameController.dispose();
-    passwordController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -93,13 +88,11 @@ class _LoginPageState extends State<LoginPage> {
     //var result = await identityProvider.fetchUser(
     //  usernameController.text, passwordController.text);
 
-    identityProvider
-        .getIdentity(usernameController.text, passwordController.text)
-        .then((_) {
+    identityProvider.getIdentity(_usernameController.text, _passwordController.text).then((_) {
       // inloggen gelukt,
 
       // wachtwoordveld legen
-      passwordController.clear();
+      _passwordController.clear();
 
       // eventueel eerder getoonde foutmelding legen
       setState(() {
@@ -112,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
       // inloggen niet gelukt,
 
       // wachtwoordveld legen
-      passwordController.clear();
+      _passwordController.clear();
 
       // en toon foutmelding
       setState(() {
