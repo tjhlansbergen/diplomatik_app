@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'package:diplomatik_app/models/qualification.dart';
 import 'package:diplomatik_app/providers/qualification_provider.dart';
+import 'package:diplomatik_app/pages/qualification_page.dart';
+import 'package:diplomatik_app/pages/qualification_select_page.dart';
 
 class QualificationsPage extends StatefulWidget {
   @override
@@ -28,17 +30,15 @@ class _QualificationsPageState extends State<QualificationsPage> {
         title: Text("Kwalificaties"),
       ),
       body: FutureBuilder<List<Qualification>>(
-        future: downloadData(), // function where you call your api
-        builder: (BuildContext context,
-            AsyncSnapshot<List<Qualification>> snapshot) {
-          // AsyncSnapshot<Your object type>
+        future: downloadData(),
+        builder: (BuildContext context, AsyncSnapshot<List<Qualification>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: Text('Laden...'));
           } else {
             if (snapshot.hasError)
               return Center(child: Text(snapshot.error.toString()));
             else
-              return QualificationList(items: snapshot.data);
+              return qualificationList(context, snapshot.data);
           }
         },
       ),
@@ -53,43 +53,38 @@ class _QualificationsPageState extends State<QualificationsPage> {
     showDialog(
         context: context,
         builder: (_) => new Dialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   FlatButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.pop(context); // verwijder pop-up!
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => QualificationSelectPage()))
+                            .then((_) => setState(() => {}));
                       },
-                      child: Text('Kies uit lijst',
-                          style: TextStyle(color: Colors.blue))),
+                      child: Text('Kies uit lijst', style: TextStyle(color: Colors.blue))),
                   Divider(),
                   FlatButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text('Maak handmatig',
-                          style: TextStyle(color: Colors.blue))),
+                      child: Text('Maak handmatig', style: TextStyle(color: Colors.blue))),
                 ],
               ),
             ));
   }
-}
 
-class QualificationList extends StatelessWidget {
-  final List<Qualification> items;
-  const QualificationList({Key key, this.items}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget qualificationList(BuildContext context, List<Qualification> qualifications) {
     return Scaffold(
         body: Padding(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: ListView.separated(
         itemBuilder: (context, index) {
           return InkWell(
-              onTap: _buttonDummy,
+              onTap: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => QualificationPage(qualifications[index].id)))
+                  .then((_) => setState(() => {})),
               child: SizedBox(
                   child: Container(
                 child: Padding(
@@ -98,7 +93,7 @@ class QualificationList extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          items[index].organization,
+                          qualifications[index].organization,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 14,
@@ -106,7 +101,7 @@ class QualificationList extends StatelessWidget {
                           textAlign: TextAlign.left,
                         ),
                         Text(
-                          items[index].name,
+                          qualifications[index].name,
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 18,
@@ -117,15 +112,11 @@ class QualificationList extends StatelessWidget {
                     )),
               )));
         },
-        itemCount: items.length,
+        itemCount: qualifications.length,
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
         separatorBuilder: (BuildContext context, int index) => const Divider(),
       ),
     ));
-  }
-
-  void _buttonDummy() {
-    //
   }
 }
