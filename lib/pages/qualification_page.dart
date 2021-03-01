@@ -132,10 +132,10 @@ class QualificationCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 24.0,
+                      height: _qualification.courses.length > 0 ? 24.0 : 0,
                     ),
                     Text(
-                      "Geeft vrijstelling voor:",
+                      _qualification.courses.length > 0 ? "Geeft vrijstelling voor:" : "",
                       style: TextStyle(
                         fontSize: 12,
                       ),
@@ -148,9 +148,6 @@ class QualificationCard extends StatelessWidget {
                               padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                               child: Text("\u2022 " + _qualification.courses[index].name));
                         }),
-                    SizedBox(
-                      height: 24.0,
-                    ),
                   ],
                 ))));
   }
