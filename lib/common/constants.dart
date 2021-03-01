@@ -10,4 +10,5 @@ class Constants {
   // API endpoints
   static final loginEndpoint = Constants.baseURL + '/login';
   static final qualificationsEndpoint = Constants.baseURL + '/qualifications';
+  static final coursesEndpoint = Constants.baseURL + '/courses';
 }

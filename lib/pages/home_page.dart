@@ -6,8 +6,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:diplomatik_app/pages/qualifications_page.dart';
 import 'package:diplomatik_app/providers/identity_provider.dart';
+import 'package:diplomatik_app/pages/qualifications_page.dart';
+import 'package:diplomatik_app/pages/courses_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key key}) : super(key: key);
@@ -36,7 +37,9 @@ class HomePage extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     // menu-knop
                     child: ElevatedButton.icon(
-                        onPressed: () => print('Vakken'), icon: Icon(Icons.assignment), label: Text("Vakken"))),
+                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CoursesPage())),
+                        icon: Icon(Icons.assignment),
+                        label: Text("Vakken"))),
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     // menu-knop

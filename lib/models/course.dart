@@ -4,6 +4,8 @@
 
 import 'dart:ui';
 
+import 'package:diplomatik_app/models/qualification.dart';
+
 class Course {
   // Properties
   int id;
@@ -12,6 +14,7 @@ class Course {
   int customerId;
   String createdAt;
   String updatedAt;
+  List<Qualification> qualifications;
 
   // Constructor
   Course({
