@@ -54,6 +54,5 @@ class Identity {
 
   // Override hashcode voor het maken van hashcode van samengestelde properties
   @override
-  int get hashCode => hashValues(
-      userId, userName, customerId, customerName, canAddUsers, token);
+  int get hashCode => hashValues(userId, userName, customerId, customerName, canAddUsers, token);
 }

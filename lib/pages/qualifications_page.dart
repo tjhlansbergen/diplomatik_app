@@ -17,6 +17,7 @@ class QualificationsPage extends StatefulWidget {
 }
 
 class _QualificationsPageState extends State<QualificationsPage> {
+  // asynchrone methode voor aanroepen provider voor ophalen alle van kwalificaties gekoppeld aan klant
   Future<List<Qualification>> downloadData() async {
     var qualificationProvider = new QualificationProvider();
     var response = await qualificationProvider.getQualifications(context);
@@ -26,23 +27,27 @@ class _QualificationsPageState extends State<QualificationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // header-balk met paginanaam
       appBar: AppBar(
-        // header-balk met paginanaam
         title: Text("Kwalificaties"),
       ),
       body: FutureBuilder<List<Qualification>>(
         future: downloadData(),
         builder: (BuildContext context, AsyncSnapshot<List<Qualification>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
+            // wacht terwijl data binnenkomt
             return Center(child: Text('Laden...'));
           } else {
             if (snapshot.hasError)
+              // toon melding indien data niet gehaald kan worden
               return Center(child: Text(snapshot.error.toString()));
             else
+              // toon de data zodra deze binnen is
               return qualificationList(context, snapshot.data);
           }
         },
       ),
+      // toevoegen-knop
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: _showNewQualificationDialog,
@@ -50,6 +55,7 @@ class _QualificationsPageState extends State<QualificationsPage> {
     );
   }
 
+  // dialoog-venster voor methode van toevoegen (handmatig/uit lijst)
   _showNewQualificationDialog() {
     showDialog(
         context: context,
@@ -68,7 +74,7 @@ class _QualificationsPageState extends State<QualificationsPage> {
                   Divider(),
                   FlatButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.of(context).pop(); // verwijder pop-up!
                         Navigator.push(context, MaterialPageRoute(builder: (_) => QualificationCreatePage()))
                             .then((_) => setState(() => {}));
                       },
@@ -78,6 +84,7 @@ class _QualificationsPageState extends State<QualificationsPage> {
             ));
   }
 
+  // widget voor tonen van klikbare lijst van kwalificaties
   Widget qualificationList(BuildContext context, List<Qualification> qualifications) {
     return Scaffold(
         body: Padding(
@@ -85,6 +92,7 @@ class _QualificationsPageState extends State<QualificationsPage> {
       child: ListView.separated(
         itemBuilder: (context, index) {
           return InkWell(
+              // klik-actie voor tonen individueel item
               onTap: () => Navigator.push(
                       context, MaterialPageRoute(builder: (_) => QualificationPage(qualifications[index].id)))
                   .then((_) => setState(() => {})),

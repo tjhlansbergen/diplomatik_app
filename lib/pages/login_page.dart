@@ -24,8 +24,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // toon balk met app-naam
       appBar: AppBar(
-        // toon balk met app-naam
         title: Text("Diplomatik"),
       ),
       body: Column(
@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  // private async methode voor inloggen op de APO
+  // private async methode voor inloggen op de API
   Future<void> _login() async {
     // roep identity provider aan om gebruiker op te halen
     // met de opgegeven inloggevens, en wacht daarop
@@ -90,7 +90,6 @@ class _LoginPageState extends State<LoginPage> {
 
     identityProvider.getIdentity(_usernameController.text, _passwordController.text).then((_) {
       // inloggen gelukt,
-
       // wachtwoordveld legen
       _passwordController.clear();
 
@@ -103,11 +102,10 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
     }).catchError((error) {
       // inloggen niet gelukt,
-
       // wachtwoordveld legen
       _passwordController.clear();
 
-      // en toon foutmelding
+      // en toon foutmelding, error tekst komt van de identity-provider
       setState(() {
         _message = "Inloggen mislukt, " + error;
       });

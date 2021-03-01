@@ -24,24 +24,29 @@ class _QualificationCreatePageState extends State {
 
   var _qualification = Qualification();
 
+  // asynchrone methode voor aanroepen provider voor opslaan kwalificatie
   Future<void> _saveQualification() async {
     if (_formKey.currentState.validate()) {
+      // haal veld-input op
       _formKey.currentState.save();
 
+      // bepaal kwalificatie type-id
       _qualification.qualificationTypeId = _isSelected[0] ? 1 : 2;
 
+      // roep API aan via provider om kwalifcatie aan te maken
       var qualificationProvider = new QualificationProvider();
       qualificationProvider.createQualification(context, _qualification);
 
-      Navigator.pop(context); // verwijder mijzelf
+      // sluit pagina
+      Navigator.pop(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // header-balk met paginanaam
       appBar: AppBar(
-        // header-balk met paginanaam
         title: Text("Vul in om toe te voegen"),
       ),
       body: Form(
@@ -52,6 +57,7 @@ class _QualificationCreatePageState extends State {
               children: [
                 Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
+                    // invoerveld naam
                     child: TextFormField(
                       controller: _name,
                       decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Naam:'),
@@ -62,6 +68,7 @@ class _QualificationCreatePageState extends State {
                       onSaved: (value) => _qualification.name = value,
                     )),
                 Padding(
+                    // invoerveld organisatie-naam
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: TextFormField(
                       controller: _organisation,
@@ -73,6 +80,7 @@ class _QualificationCreatePageState extends State {
                       onSaved: (value) => _qualification.organization = value,
                     )),
                 Padding(
+                  // toggle soort
                   padding: EdgeInsets.symmetric(vertical: 15),
                   child: Center(
                     child: ToggleButtons(
@@ -98,6 +106,7 @@ class _QualificationCreatePageState extends State {
               ],
             ),
           )),
+      // accoordeer knop
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check),
         onPressed: _saveQualification,

@@ -17,37 +17,43 @@ class QualificationPage extends StatefulWidget {
 }
 
 class _QualificationPageState extends State<QualificationPage> {
+  // asynchrone methode voor aanroepen provider voor ophalen kwalificatie
   Future<Qualification> downloadData() async {
     var qualificationProvider = new QualificationProvider();
     var response = await qualificationProvider.getQualification(context, widget._id);
     return Future.value(response);
   }
 
+  // asynchrone methode voor aanroepen provider voor verwijderen kwalificatie
   Future<void> removeQualification(int id) async {
     var qualificationProvider = new QualificationProvider();
     await qualificationProvider.removeQualification(context, id);
 
-    Navigator.pop(context); // verwijder mijzelf
+    // sluit pagina
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // header-balk met paginanaam
       appBar: AppBar(
-        // header-balk met paginanaam
         title: Text("Kwalificatie"),
       ),
       body: FutureBuilder<Qualification>(
         future: downloadData(),
         builder: (BuildContext context, AsyncSnapshot<Qualification> snapshot) {
+          // wacht terwijl de data binnenkomt
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: Text('Laden...'));
           } else {
+            // toon melding indien data niet gehaald kon worden
             if (snapshot.hasError)
               return Center(child: Text(snapshot.error.toString()));
             else
               return Column(
                 children: [
+                  // toon data en verwijder-knop zodra de data binnen is
                   QualificationCard(snapshot.data),
                   FlatButton(
                       onPressed: () => removeQualification(snapshot.data.id),
@@ -64,10 +70,12 @@ class _QualificationPageState extends State<QualificationPage> {
   }
 }
 
+// widget voor het tonen van één kwalificatie
 class QualificationCard extends StatelessWidget {
   final Qualification _qualification;
   const QualificationCard(this._qualification);
 
+  // mapping type->type-id
   String _getType(int id) {
     switch (id) {
       case 1:
@@ -87,6 +95,7 @@ class QualificationCard extends StatelessWidget {
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: Column(
+                  // toon details in kolom
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -131,6 +140,7 @@ class QualificationCard extends StatelessWidget {
                         fontSize: 18,
                       ),
                     ),
+                    // onderstaande wordt alleen getoon áls er vrijstellingen zijn
                     SizedBox(
                       height: _qualification.courses.length > 0 ? 24.0 : 0,
                     ),

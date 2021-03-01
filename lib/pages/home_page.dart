@@ -15,90 +15,64 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        // header-balk met app-naam uitlogknop
         appBar: AppBar(
-          // header-balk met app-naam uitlogknop
           title: Text("Diplomatik"),
         ),
         body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(children: [
-              GridView.count(
-                  // raster voor de menu-knoppen
-                  shrinkWrap: true,
-                  crossAxisCount: 2,
-                  children: <Widget>[
-                    Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: ElevatedButton.icon(
-                            onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => QualificationsPage())),
-                            icon: Icon(Icons.school),
-                            label: Text("Kwalificaties"))),
-                    Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: ElevatedButton.icon(
-                            onPressed: _buttonDummy,
-                            icon: Icon(Icons.assignment),
-                            label: Text("Vakken"))),
-                    Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: ElevatedButton.icon(
-                            onPressed: _buttonDummy,
-                            icon: Icon(Icons.face),
-                            label: Text("Studenten"))),
-                    Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: ElevatedButton.icon(
-                            onPressed: Provider.of<IdentityProvider>(context,
-                                        listen: false)
-                                    .currentUser
-                                    .canAddUsers
-                                ? _buttonDummy
-                                : null,
-                            icon: Icon(Icons.supervisor_account),
-                            label: Text("Accounts"))),
-                  ]),
+              // raster voor de menu-knoppen
+              GridView.count(shrinkWrap: true, crossAxisCount: 2, children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    // menu-knop
+                    child: ElevatedButton.icon(
+                        onPressed: () =>
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => QualificationsPage())),
+                        icon: Icon(Icons.school),
+                        label: Text("Kwalificaties"))),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    // menu-knop
+                    child: ElevatedButton.icon(
+                        onPressed: () => print('Vakken'), icon: Icon(Icons.assignment), label: Text("Vakken"))),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    // menu-knop
+                    child: ElevatedButton.icon(
+                        onPressed: () => print('Studenten'), icon: Icon(Icons.face), label: Text("Studenten"))),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    // menu-knop
+                    child: ElevatedButton.icon(
+                        // schakelt accounts knop uit als ingelogde gebruiker geen gebruikersbeheerrechten heeft
+                        onPressed: Provider.of<IdentityProvider>(context, listen: false).currentUser.canAddUsers
+                            ? () => print('Accounts')
+                            : null,
+                        icon: Icon(Icons.supervisor_account),
+                        label: Text("Accounts"))),
+              ]),
+              // toon naam ingelogde gebruiker en klantnaam
               Expanded(
-                child:
-                    Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
                   Row(children: [
-                    Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: Icon(Icons.person)),
+                    Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10), child: Icon(Icons.person)),
                     Text(
-                      Provider.of<IdentityProvider>(context, listen: false)
-                          .currentUser
-                          .userName,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      Provider.of<IdentityProvider>(context, listen: false).currentUser.userName,
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     )
                   ]),
                   Row(children: [
                     Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: Icon(Icons.location_city)),
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10), child: Icon(Icons.location_city)),
                     Text(
-                      Provider.of<IdentityProvider>(context, listen: false)
-                          .currentUser
-                          .customerName,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      Provider.of<IdentityProvider>(context, listen: false).currentUser.customerName,
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     )
                   ]),
                 ]),
               )
             ])));
-  }
-
-  void _buttonDummy() {
-    //
   }
 }

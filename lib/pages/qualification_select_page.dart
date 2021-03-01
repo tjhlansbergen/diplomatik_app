@@ -14,6 +14,7 @@ class QualificationSelectPage extends StatefulWidget {
 }
 
 class _QualificationSelectPageState extends State<QualificationSelectPage> {
+  // asynchrone methode voor aanroepen provider voor ophalen kwalificaties, die NIET al aan de klant gekoppeld zijn
   Future<List<Qualification>> downloadData() async {
     var qualificationProvider = new QualificationProvider();
     var response = await qualificationProvider.getQualifications(context, true);
@@ -23,20 +24,22 @@ class _QualificationSelectPageState extends State<QualificationSelectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        // header-balk met paginanaam
         appBar: AppBar(
-          // header-balk met paginanaam
           title: Text("Selecteer om toe te voegen"),
         ),
         body: FutureBuilder<List<Qualification>>(
-          future: downloadData(), // function where you call your api
+          future: downloadData(),
           builder: (BuildContext context, AsyncSnapshot<List<Qualification>> snapshot) {
-            // AsyncSnapshot<Your object type>
+            // wacht op de data
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: Text('Laden...'));
             } else {
+              // toon melding als data niet gehaald kan worden
               if (snapshot.hasError)
                 return Center(child: Text(snapshot.error.toString()));
               else
+                // toont data als deze binnen is
                 return QualificationSelect(snapshot.data);
             }
           },
@@ -44,6 +47,7 @@ class _QualificationSelectPageState extends State<QualificationSelectPage> {
   }
 }
 
+// widget voor het tonen van selecteerbare lijst kwalificaties
 class QualificationSelect extends StatefulWidget {
   final List<Qualification> _items;
   final _selected = Set<int>();
@@ -55,14 +59,17 @@ class QualificationSelect extends StatefulWidget {
 }
 
 class _QualificationSelectState extends State<QualificationSelect> {
+  // asynchrone methode voor aanroepen provider voor koppelen van kwalificaties aan klant
   Future<void> linkQualifications() async {
     var qualificationProvider = new QualificationProvider();
 
+    // voor iedere geselecteerde kwalificatie...
     widget._selected.forEach((item) {
       qualificationProvider.addQualification(context, item);
     });
 
-    Navigator.pop(context); // verwijder mijzelf
+    // sluit pagina
+    Navigator.pop(context);
   }
 
   bool select(int i) {
@@ -74,6 +81,7 @@ class _QualificationSelectState extends State<QualificationSelect> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 20),
+        // selecteerbare lijst kwalificaties
         child: ListView.separated(
           itemBuilder: (context, index) {
             return InkWell(
@@ -89,6 +97,7 @@ class _QualificationSelectState extends State<QualificationSelect> {
                 child: Row(children: [
                   Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
+                      // selectie knop
                       child: Icon(select(index) ? Icons.radio_button_on : Icons.radio_button_off,
                           color: select(index) ? Colors.blue : Colors.blueGrey)),
                   Padding(
@@ -122,6 +131,7 @@ class _QualificationSelectState extends State<QualificationSelect> {
           separatorBuilder: (BuildContext context, int index) => const Divider(),
         ),
       ),
+      // accordeer-knop
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check),
         onPressed: linkQualifications,

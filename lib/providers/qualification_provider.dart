@@ -20,6 +20,7 @@ class QualificationProvider {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
 
+      // bepaal de juiste URL
       var uri = Constants.qualificationsEndpoint;
       if (unselected) {
         uri = uri + "?unselected=true";
@@ -38,7 +39,7 @@ class QualificationProvider {
         }
         return results;
       } else {
-        //   // alles anders 200-OK handelen we af als 'server niet bereikbaar'
+        // alles anders 200-OK handelen we af als 'server niet bereikbaar'
         throw 'server niet bereikbaar';
       }
     } on Exception {
@@ -52,7 +53,6 @@ class QualificationProvider {
   Future<Qualification> getQualification(BuildContext context, int id) async {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
-
       var uri = Constants.qualificationsEndpoint + "/$id";
 
       // roep login endpoint asynchroon aan
@@ -70,11 +70,8 @@ class QualificationProvider {
         }
 
         return qualification;
-
-        // return (jsonDecode(response.body) as Map).map(
-        //     (q) => Qualification.fromJson(q));
       } else {
-        //   // alles anders 200-OK handelen we af als 'server niet bereikbaar'
+        // alles anders 200-OK handelen we af als 'server niet bereikbaar'
         throw 'server niet bereikbaar';
       }
     } on Exception {
@@ -88,7 +85,6 @@ class QualificationProvider {
   Future<void> addQualification(BuildContext context, int id) async {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
-
       var uri = Constants.qualificationsEndpoint + "/$id";
 
       // roep login endpoint asynchroon aan
@@ -107,7 +103,6 @@ class QualificationProvider {
   Future<void> removeQualification(BuildContext context, int id) async {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
-
       var uri = Constants.qualificationsEndpoint + "/$id";
 
       // roep login endpoint asynchroon aan
@@ -126,8 +121,6 @@ class QualificationProvider {
   Future<void> createQualification(BuildContext context, Qualification qualification) async {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
-
-      var test = jsonEncode(qualification.toJson());
 
       // roep login endpoint asynchroon aan
       await http
