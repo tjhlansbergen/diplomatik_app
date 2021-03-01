@@ -82,6 +82,9 @@ class _LoginPageState extends State<LoginPage> {
 
   // private async methode voor inloggen op de API
   Future<void> _login() async {
+    // verberg keyboard
+    FocusScope.of(context).unfocus();
+
     // roep identity provider aan om gebruiker op te halen
     // met de opgegeven inloggevens, en wacht daarop
     var identityProvider = context.read<IdentityProvider>();
