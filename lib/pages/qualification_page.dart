@@ -57,7 +57,7 @@ class _QualificationPageState extends State<QualificationPage> {
                   QualificationCard(snapshot.data),
                   FlatButton(
                       onPressed: () => removeQualification(snapshot.data.id),
-                      child: Text('Verwijder',
+                      child: Text('Kwalificatie verwijderen',
                           style: TextStyle(
                             color: Colors.red,
                           )))

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:diplomatik_app/models/course.dart';
 import 'package:diplomatik_app/providers/course_provider.dart';
+import 'package:diplomatik_app/pages/qualification_select_page.dart';
 
 class CoursePage extends StatefulWidget {
   final int _id;
@@ -56,11 +57,19 @@ class _CoursePageState extends State<CoursePage> {
                   // toon data en verwijder-knop zodra de data binnen is
                   CourseCard(snapshot.data),
                   FlatButton(
+                      onPressed: () => Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => QualificationSelectPage(false, course: snapshot.data)))
+                          .then((_) => setState(() => {})),
+                      child: Text('Vrijstellingen selecteren',
+                          style: TextStyle(
+                            color: Colors.green,
+                          ))),
+                  FlatButton(
                       onPressed: () => removeCourse(snapshot.data.id),
-                      child: Text('Verwijder',
+                      child: Text('Vak verwijderen',
                           style: TextStyle(
                             color: Colors.red,
-                          )))
+                          ))),
                 ],
               );
           }

@@ -6,9 +6,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:diplomatik_app/models/qualification.dart';
+import 'package:diplomatik_app/models/course.dart';
 import 'package:diplomatik_app/providers/qualification_provider.dart';
 
 class QualificationSelectPage extends StatefulWidget {
+  final bool reverseSelection;
+  final Course course;
+
+  const QualificationSelectPage(this.reverseSelection, {this.course});
+
   @override
   _QualificationSelectPageState createState() => _QualificationSelectPageState();
 }
@@ -17,7 +23,7 @@ class _QualificationSelectPageState extends State<QualificationSelectPage> {
   // asynchrone methode voor aanroepen provider voor ophalen kwalificaties, die NIET al aan de klant gekoppeld zijn
   Future<List<Qualification>> downloadData() async {
     var qualificationProvider = new QualificationProvider();
-    var response = await qualificationProvider.getQualifications(context, true);
+    var response = await qualificationProvider.getQualifications(context, widget.reverseSelection);
     return Future.value(response);
   }
 
@@ -50,7 +56,7 @@ class _QualificationSelectPageState extends State<QualificationSelectPage> {
 // widget voor het tonen van selecteerbare lijst kwalificaties
 class QualificationSelect extends StatefulWidget {
   final List<Qualification> _items;
-  final _selected = Set<int>();
+  final _selected = Set<int>(); // lijst met (unieke) kwalificatie-id's
 
   QualificationSelect(this._items);
 
@@ -60,7 +66,7 @@ class QualificationSelect extends StatefulWidget {
 
 class _QualificationSelectState extends State<QualificationSelect> {
   // asynchrone methode voor aanroepen provider voor koppelen van kwalificaties aan klant
-  Future<void> linkQualifications() async {
+  Future<void> linkCustomer() async {
     var qualificationProvider = new QualificationProvider();
 
     // voor iedere geselecteerde kwalificatie...
@@ -134,7 +140,7 @@ class _QualificationSelectState extends State<QualificationSelect> {
       // accordeer-knop
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check),
-        onPressed: linkQualifications,
+        onPressed: linkCustomer,
       ),
     );
   }

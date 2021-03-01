@@ -67,14 +67,14 @@ class _QualificationsPageState extends State<QualificationsPage> {
                   FlatButton(
                       onPressed: () {
                         Navigator.pop(context); // verwijder pop-up!
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => QualificationSelectPage()))
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => QualificationSelectPage(true)))
                             .then((_) => setState(() => {}));
                       },
                       child: Text('Kies uit lijst', style: TextStyle(color: Colors.blue))),
                   Divider(),
                   FlatButton(
                       onPressed: () {
-                        Navigator.of(context).pop(); // verwijder pop-up!
+                        Navigator.pop(context); // verwijder pop-up!
                         Navigator.push(context, MaterialPageRoute(builder: (_) => QualificationCreatePage()))
                             .then((_) => setState(() => {}));
                       },
