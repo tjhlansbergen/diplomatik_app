@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:diplomatik_app/models/student.dart';
 import 'package:diplomatik_app/providers/student_provider.dart';
 import 'package:diplomatik_app/pages/student_page.dart';
-//import 'package:diplomatik_app/pages/student_create_page.dart';
+import 'package:diplomatik_app/pages/student_create_page.dart';
 
 class StudentsPage extends StatefulWidget {
   @override
@@ -49,8 +49,8 @@ class _StudentsPageState extends State<StudentsPage> {
       // toevoegen-knop
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        // onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StudentCreatePage()))
-        //     .then((_) => setState(() => {})),
+        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StudentCreatePage()))
+            .then((_) => setState(() => {})),
       ),
     );
   }
