@@ -16,7 +16,7 @@ class CoursesPage extends StatefulWidget {
 }
 
 class _CoursesPageState extends State<CoursesPage> {
-  // asynchrone methode voor aanroepen provider voor ophalen alle van kwalificaties gekoppeld aan klant
+  // asynchrone methode voor aanroepen provider voor ophalen alle van vakken gekoppeld aan klant
   Future<List<Course>> downloadData() async {
     var courseProvider = new CourseProvider();
     var response = await courseProvider.getCourses(context);
@@ -55,7 +55,7 @@ class _CoursesPageState extends State<CoursesPage> {
     );
   }
 
-  // widget voor tonen van klikbare lijst van kwalificaties
+  // widget voor tonen van klikbare lijst van vakken
   Widget courseList(BuildContext context, List<Course> courses) {
     return Scaffold(
         body: Padding(

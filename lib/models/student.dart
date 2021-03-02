@@ -1,26 +1,28 @@
-// course.dart - Tako Lansbergen 2020/02/28
+// student.dart - Tako Lansbergen 2020/03/02
 //
-// Model voor een vak
+// Model voor een student
 
 import 'dart:ui';
 
 import 'package:diplomatik_app/models/qualification.dart';
+import 'package:diplomatik_app/models/course.dart';
 
-class Course {
+class Student {
   // Properties
   int id;
   String name;
-  String code;
+  String studentNumber;
   int customerId;
   String createdAt;
   String updatedAt;
   List<Qualification> qualifications;
+  List<Course> exemptions;
 
   // Constructor
-  Course({
+  Student({
     this.id,
     this.name,
-    this.code,
+    this.studentNumber,
     this.customerId,
     this.createdAt,
     this.updatedAt,
@@ -28,15 +30,15 @@ class Course {
 
   @override
   String toString() {
-    return 'Course(id: $id, name: $name, code: $code, customerId: $customerId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Student(id: $id, name: $name, studentNumber: $studentNumber, customerId: $customerId, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   // Deserialisatie van JSON
-  factory Course.fromJson(Map<String, dynamic> json) {
-    return Course(
+  factory Student.fromJson(Map<String, dynamic> json) {
+    return Student(
       id: json['id'] as int,
       name: json['name'] as String,
-      code: json['code'] as String,
+      studentNumber: json['student_number'] as String,
       customerId: json['customer_id'] as int,
       createdAt: json['created_at'] as String,
       updatedAt: json['updated_at'] as String,
@@ -48,7 +50,7 @@ class Course {
     return {
       'id': id,
       'name': name,
-      'code': code,
+      'student_number': studentNumber,
       'customer_id': customerId,
       'created_at': createdAt,
       'updated_at': updatedAt,
@@ -57,10 +59,10 @@ class Course {
 
   @override
   bool operator ==(Object o) =>
-      o is Course &&
+      o is Student &&
       identical(o.id, id) &&
       identical(o.name, name) &&
-      identical(o.code, code) &&
+      identical(o.studentNumber, studentNumber) &&
       identical(o.customerId, customerId) &&
       identical(o.createdAt, createdAt) &&
       identical(o.updatedAt, updatedAt);
@@ -70,7 +72,7 @@ class Course {
     return hashValues(
       id,
       name,
-      code,
+      studentNumber,
       customerId,
       createdAt,
       updatedAt,

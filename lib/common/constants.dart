@@ -11,6 +11,7 @@ class Constants {
   static final loginEndpoint = Constants.baseURL + '/login';
   static final qualificationsEndpoint = Constants.baseURL + '/qualifications';
   static final coursesEndpoint = Constants.baseURL + '/courses';
+  static final studentsEndpoint = Constants.baseURL + '/students';
 }
 
 enum SelectionContext { customer, course, student }

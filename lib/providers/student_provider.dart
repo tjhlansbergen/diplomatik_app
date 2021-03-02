@@ -1,6 +1,6 @@
-// course_provider.dart - Tako Lansbergen 2020/03/01
+// student_provider.dart - Tako Lansbergen 2020/03/02
 //
-// Provider voor vakken gerelateerde API-calls
+// Provider voor student gerelateerde API-calls
 
 import 'dart:async';
 import 'dart:convert';
@@ -9,17 +9,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+import 'package:diplomatik_app/models/student.dart';
 import 'package:diplomatik_app/models/qualification.dart';
 import 'package:diplomatik_app/models/course.dart';
 import 'package:diplomatik_app/common/constants.dart';
 import 'package:diplomatik_app/providers/identity_provider.dart';
 
-class CourseProvider {
-  // Methode voor ophalen van vakken
-  Future<List<Course>> getCourses(BuildContext context) async {
+class StudentProvider {
+  // Methode voor ophalen van studenten
+  Future<List<Student>> getStudents(BuildContext context) async {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
-      var uri = Constants.coursesEndpoint;
+      var uri = Constants.studentsEndpoint;
 
       // roep endpoint asynchroon aan
       final response = await http.get(uri, headers: {
@@ -28,7 +29,7 @@ class CourseProvider {
 
       // check de response, deserialiseer de gegevens indien OK
       if (response.statusCode == 200) {
-        var results = (jsonDecode(response.body) as List).map<Course>((q) => Course.fromJson(q)).toList();
+        var results = (jsonDecode(response.body) as List).map<Student>((q) => Student.fromJson(q)).toList();
         if (results != null) {
           results.sort((a, b) => a.name.compareTo(b.name));
         }
@@ -44,11 +45,11 @@ class CourseProvider {
     }
   }
 
-  // Methode voor ophalen van één vak
-  Future<Course> getCourse(BuildContext context, int id) async {
+  // Methode voor ophalen van één Student
+  Future<Student> getStudent(BuildContext context, int id) async {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
-      var uri = Constants.coursesEndpoint + "/$id";
+      var uri = Constants.studentsEndpoint + "/$id";
 
       // roep endpoint asynchroon aan
       final response = await http.get(uri, headers: {
@@ -57,15 +58,21 @@ class CourseProvider {
 
       // check de response, deserialiseer de gegevens indien OK
       if (response.statusCode == 200) {
-        var course = Course.fromJson(jsonDecode(response.body)["course"]);
+        var student = Student.fromJson(jsonDecode(response.body)["student"]);
         List<Qualification> qualifications =
             jsonDecode(response.body)["qualifications"].map<Qualification>((c) => Qualification.fromJson(c)).toList();
         if (qualifications != null) {
           qualifications.sort((a, b) => a.organization.compareTo(b.organization));
-          course.qualifications = qualifications;
+          student.qualifications = qualifications;
+        }
+        List<Course> exemptions =
+            jsonDecode(response.body)["exemptions"].map<Course>((c) => Course.fromJson(c)).toList();
+        if (exemptions != null) {
+          exemptions.sort((a, b) => a.name.compareTo(b.name));
+          student.exemptions = exemptions;
         }
 
-        return course;
+        return student;
       } else {
         // alles anders 200-OK handelen we af als 'server niet bereikbaar'
         throw 'server niet bereikbaar';
@@ -78,10 +85,10 @@ class CourseProvider {
   }
 
   // Methode voor koppelen van kwalificatie
-  Future<void> updateCourse(BuildContext context, int id, Set<int> qualifications) async {
+  Future<void> updateStudent(BuildContext context, int id, Set<int> qualifications) async {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
-      var uri = Constants.coursesEndpoint + "/$id";
+      var uri = Constants.studentsEndpoint + "/$id";
       var qualification_ids = {"qualification_ids": qualifications.toList()};
 
       // roep endpoint asynchroon aan
@@ -101,11 +108,11 @@ class CourseProvider {
     }
   }
 
-  // Methode voor verwijderen van vak
-  Future<void> deleteCourse(BuildContext context, int id) async {
+  // Methode voor verwijderen van student
+  Future<void> deleteStudent(BuildContext context, int id) async {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
-      var uri = Constants.coursesEndpoint + "/$id";
+      var uri = Constants.studentsEndpoint + "/$id";
 
       // roep endpoint asynchroon aan
       await http.delete(uri, headers: {
@@ -120,18 +127,18 @@ class CourseProvider {
   }
 
   // Methode voor maken van vak
-  Future<void> createCourse(BuildContext context, Course course) async {
+  Future<void> createStudent(BuildContext context, Student student) async {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
 
       // roep endpoint asynchroon aan
       await http
-          .post(Constants.coursesEndpoint,
+          .post(Constants.studentsEndpoint,
               headers: {
                 'Authorization': 'Bearer $token',
                 "content-type": "application/json",
               },
-              body: jsonEncode(course.toJson()))
+              body: jsonEncode(student.toJson()))
           .timeout(Duration(seconds: Constants.defaultTimeout));
 
       // fire and forget, we wachten niet op het eventuele resultaat,
