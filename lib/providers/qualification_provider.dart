@@ -100,7 +100,7 @@ class QualificationProvider {
   }
 
   // Methode voor ONTkoppelen van kwalificatie
-  Future<void> removeQualification(BuildContext context, int id) async {
+  Future<void> deleteQualification(BuildContext context, int id) async {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
       var uri = Constants.qualificationsEndpoint + "/$id";

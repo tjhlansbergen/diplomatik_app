@@ -5,6 +5,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:diplomatik_app/common/constants.dart';
 import 'package:diplomatik_app/models/qualification.dart';
 import 'package:diplomatik_app/providers/qualification_provider.dart';
 import 'package:diplomatik_app/pages/qualification_page.dart';
@@ -67,7 +68,8 @@ class _QualificationsPageState extends State<QualificationsPage> {
                   FlatButton(
                       onPressed: () {
                         Navigator.pop(context); // verwijder pop-up!
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => QualificationSelectPage(true)))
+                        Navigator.push(context,
+                                MaterialPageRoute(builder: (_) => QualificationSelectPage(SelectionContext.customer)))
                             .then((_) => setState(() => {}));
                       },
                       child: Text('Kies uit lijst', style: TextStyle(color: Colors.blue))),

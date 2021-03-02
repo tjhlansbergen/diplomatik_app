@@ -27,7 +27,7 @@ class _QualificationPageState extends State<QualificationPage> {
   // asynchrone methode voor aanroepen provider voor verwijderen kwalificatie
   Future<void> removeQualification(int id) async {
     var qualificationProvider = new QualificationProvider();
-    await qualificationProvider.removeQualification(context, id);
+    await qualificationProvider.deleteQualification(context, id);
 
     // sluit pagina
     Navigator.pop(context);

@@ -5,15 +5,17 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:diplomatik_app/common/constants.dart';
 import 'package:diplomatik_app/models/qualification.dart';
 import 'package:diplomatik_app/models/course.dart';
 import 'package:diplomatik_app/providers/qualification_provider.dart';
+import 'package:diplomatik_app/providers/course_provider.dart';
 
 class QualificationSelectPage extends StatefulWidget {
-  final bool reverseSelection;
+  final SelectionContext selectionContext;
   final Course course;
 
-  const QualificationSelectPage(this.reverseSelection, {this.course});
+  const QualificationSelectPage(this.selectionContext, {this.course});
 
   @override
   _QualificationSelectPageState createState() => _QualificationSelectPageState();
@@ -23,7 +25,8 @@ class _QualificationSelectPageState extends State<QualificationSelectPage> {
   // asynchrone methode voor aanroepen provider voor ophalen kwalificaties, die NIET al aan de klant gekoppeld zijn
   Future<List<Qualification>> downloadData() async {
     var qualificationProvider = new QualificationProvider();
-    var response = await qualificationProvider.getQualifications(context, widget.reverseSelection);
+    var response =
+        await qualificationProvider.getQualifications(context, widget.selectionContext == SelectionContext.customer);
     return Future.value(response);
   }
 
@@ -32,7 +35,9 @@ class _QualificationSelectPageState extends State<QualificationSelectPage> {
     return Scaffold(
         // header-balk met paginanaam
         appBar: AppBar(
-          title: Text("Selecteer om toe te voegen"),
+          title: Text(widget.selectionContext == SelectionContext.customer
+              ? "Selecteer om toe te voegen"
+              : "Selecteer om in te stellen"),
         ),
         body: FutureBuilder<List<Qualification>>(
           future: downloadData(),
@@ -46,7 +51,7 @@ class _QualificationSelectPageState extends State<QualificationSelectPage> {
                 return Center(child: Text(snapshot.error.toString()));
               else
                 // toont data als deze binnen is
-                return QualificationSelect(snapshot.data);
+                return QualificationSelect(snapshot.data, widget.selectionContext, widget.course);
             }
           },
         ));
@@ -56,30 +61,58 @@ class _QualificationSelectPageState extends State<QualificationSelectPage> {
 // widget voor het tonen van selecteerbare lijst kwalificaties
 class QualificationSelect extends StatefulWidget {
   final List<Qualification> _items;
+  final SelectionContext _selectionContext;
+  final Course _course;
+
   final _selected = Set<int>(); // lijst met (unieke) kwalificatie-id's
 
-  QualificationSelect(this._items);
+  QualificationSelect(this._items, this._selectionContext, this._course) {
+    _course.qualifications.forEach((qualification) {
+      _selected.add(qualification.id);
+    });
+  }
 
   @override
   _QualificationSelectState createState() => _QualificationSelectState();
 }
 
 class _QualificationSelectState extends State<QualificationSelect> {
-  // asynchrone methode voor aanroepen provider voor koppelen van kwalificaties aan klant
+  // asynchrone methode voor aanroepen provider voor koppelen van kwalificaties
   Future<void> linkCustomer() async {
-    var qualificationProvider = new QualificationProvider();
+    switch (widget._selectionContext) {
+      // kwalificaties koppelen aan de klant van de ingelogde gebruiker
+      case SelectionContext.customer:
+        var qualificationProvider = new QualificationProvider();
+        // voor iedere geselecteerde kwalificatie...
+        widget._selected.forEach((item) {
+          qualificationProvider.addQualification(context, item);
+        });
+        break;
 
-    // voor iedere geselecteerde kwalificatie...
-    widget._selected.forEach((item) {
-      qualificationProvider.addQualification(context, item);
-    });
+      // kwalificaties koppelen aan het meegestuurde vak
+      case SelectionContext.course:
+        var courseProvider = new CourseProvider();
+        courseProvider.updateCourse(context, widget._course.id, widget._selected);
+        break;
+
+      case SelectionContext.student:
+        break;
+    }
 
     // sluit pagina
     Navigator.pop(context);
   }
 
-  bool select(int i) {
+  bool isSelected(int i) {
     return widget._selected.contains(widget._items[i].id);
+  }
+
+  IconData getIconData(int i) {
+    if (widget._selectionContext == SelectionContext.customer) {
+      return isSelected(i) ? Icons.check_box_outlined : Icons.check_box_outline_blank;
+    } else {
+      return isSelected(i) ? Icons.radio_button_on : Icons.radio_button_off;
+    }
   }
 
   @override
@@ -93,7 +126,7 @@ class _QualificationSelectState extends State<QualificationSelect> {
             return InkWell(
                 onTap: () {
                   setState(() {
-                    if (select(index)) {
+                    if (isSelected(index)) {
                       widget._selected.remove(widget._items[index].id);
                     } else {
                       widget._selected.add(widget._items[index].id);
@@ -104,8 +137,7 @@ class _QualificationSelectState extends State<QualificationSelect> {
                   Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       // selectie knop
-                      child: Icon(select(index) ? Icons.radio_button_on : Icons.radio_button_off,
-                          color: select(index) ? Colors.blue : Colors.blueGrey)),
+                      child: Icon(getIconData(index), color: isSelected(index) ? Colors.blue : Colors.blueGrey)),
                   Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: Column(

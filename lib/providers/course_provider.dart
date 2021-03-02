@@ -77,26 +77,32 @@ class CourseProvider {
     }
   }
 
-  // // Methode voor koppelen van kwalificatie
-  // Future<void> addCourse(BuildContext context, int id) async {
-  //   try {
-  //     var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
-  //     var uri = Constants.qualificationsEndpoint + "/$id";
+  // Methode voor koppelen van kwalificatie
+  Future<void> updateCourse(BuildContext context, int id, Set<int> qualifications) async {
+    //try {
+    var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
+    var uri = Constants.coursesEndpoint + "/$id";
+    var qualification_ids = {"qualification_ids": qualifications.toList()};
 
-  //     // roep endpoint asynchroon aan
-  //     await http.patch(uri, headers: {
-  //       'Authorization': 'Bearer $token',
-  //     }).timeout(Duration(seconds: Constants.defaultTimeout));
+    // roep endpoint asynchroon aan
+    await http
+        .patch(uri,
+            headers: {
+              'Authorization': 'Bearer $token',
+              "content-type": "application/json",
+            },
+            body: jsonEncode(qualification_ids))
+        .timeout(Duration(seconds: Constants.defaultTimeout));
 
-  //     // fire and forget, we wachten niet op het eventuele resultaat,
-  //     // en laten het aan de server over om te bepalen of het request wel/niet uitgevoerd wordt
-  //   } on Exception {
-  //     // vang exceptions af en negeer ze
-  //   }
-  // }
+    // fire and forget, we wachten niet op het eventuele resultaat,
+    // en laten het aan de server over om te bepalen of het request wel/niet uitgevoerd wordt
+    // } on Exception {
+    //   // vang exceptions af en negeer ze
+    // }
+  }
 
   // Methode voor verwijderen van vak
-  Future<void> removeCourse(BuildContext context, int id) async {
+  Future<void> deleteCourse(BuildContext context, int id) async {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
       var uri = Constants.coursesEndpoint + "/$id";

@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:diplomatik_app/common/constants.dart';
 import 'package:diplomatik_app/models/course.dart';
 import 'package:diplomatik_app/providers/course_provider.dart';
 import 'package:diplomatik_app/pages/qualification_select_page.dart';
@@ -28,7 +29,7 @@ class _CoursePageState extends State<CoursePage> {
   // asynchrone methode voor aanroepen provider voor verwijderen vak
   Future<void> removeCourse(int id) async {
     var courseProvider = new CourseProvider();
-    await courseProvider.removeCourse(context, id);
+    await courseProvider.deleteCourse(context, id);
 
     // sluit pagina
     Navigator.pop(context);
@@ -57,10 +58,13 @@ class _CoursePageState extends State<CoursePage> {
                   // toon data en verwijder-knop zodra de data binnen is
                   CourseCard(snapshot.data),
                   FlatButton(
-                      onPressed: () => Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => QualificationSelectPage(false, course: snapshot.data)))
+                      onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      QualificationSelectPage(SelectionContext.course, course: snapshot.data)))
                           .then((_) => setState(() => {})),
-                      child: Text('Vrijstellingen selecteren',
+                      child: Text('Vrijstellingen instellen',
                           style: TextStyle(
                             color: Colors.green,
                           ))),
