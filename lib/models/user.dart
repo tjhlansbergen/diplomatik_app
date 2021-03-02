@@ -1,10 +1,10 @@
-// identity.dart - Tako Lansbergen 2020/02/23
+// user.dart - Tako Lansbergen 2020/02/23
 //
 // Model voor een gebruiker
 
 import 'dart:ui'; // tbv hashValues
 
-class Identity {
+class User {
   // Properties
   int userId;
   String userName;
@@ -12,9 +12,10 @@ class Identity {
   String customerName;
   bool canAddUsers;
   String token;
+  String password;
 
   // Constructor
-  Identity({
+  User({
     this.userId,
     this.userName,
     this.customerId,
@@ -23,15 +24,14 @@ class Identity {
     this.token,
   });
 
-  // Methode voor het omzetten naar tekenreeks
   @override
   String toString() {
     return 'Identity(userId: $userId, userName: $userName, customerId: $customerId, customerName: $customerName, canAddUsers: $canAddUsers, token: $token)';
   }
 
   // Methode deserializatie vanaf JSON object
-  factory Identity.fromJson(Map<String, dynamic> json) {
-    return Identity(
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
       userId: json['user_id'] as int,
       userName: json['user_name'] as String,
       customerId: json['customer_id'] as int,
@@ -41,10 +41,9 @@ class Identity {
     );
   }
 
-  // Override de equals methode voor het verglijken van twee User objecten
   @override
   bool operator ==(Object o) =>
-      o is Identity &&
+      o is User &&
       identical(o.userId, userId) &&
       identical(o.userName, userName) &&
       identical(o.customerId, customerId) &&
@@ -52,7 +51,6 @@ class Identity {
       identical(o.canAddUsers, canAddUsers) &&
       identical(o.token, token);
 
-  // Override hashcode voor het maken van hashcode van samengestelde properties
   @override
   int get hashCode => hashValues(userId, userName, customerId, customerName, canAddUsers, token);
 }

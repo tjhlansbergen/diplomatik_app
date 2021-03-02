@@ -9,13 +9,13 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:diplomatik_app/models/identity.dart';
+import 'package:diplomatik_app/models/user.dart';
 import 'package:diplomatik_app/models/credentials.dart';
 import 'package:diplomatik_app/common/constants.dart';
 
 class IdentityProvider extends ChangeNotifier {
   // Properties
-  Identity currentUser;
+  User currentUser;
 
   // Methode voor ophalen van gebruiker a.d.h.v. inloggegevens
   Future<void> getIdentity(String username, String password) async {
@@ -34,7 +34,7 @@ class IdentityProvider extends ChangeNotifier {
 
       // check de response, deserialiseer de gegevens indien OK
       if (response.statusCode == 200) {
-        currentUser = Identity.fromJson(jsonDecode(response.body));
+        currentUser = User.fromJson(jsonDecode(response.body));
         return true;
       } else {
         // wanneer er wel een respons van de server is, maar niet OK

@@ -89,7 +89,7 @@ class StudentProvider {
     try {
       var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
       var uri = Constants.studentsEndpoint + "/$id";
-      var qualification_ids = {"qualification_ids": qualifications.toList()};
+      var qualificationIds = {"qualification_ids": qualifications.toList()};
 
       // roep endpoint asynchroon aan
       await http
@@ -98,7 +98,7 @@ class StudentProvider {
                 'Authorization': 'Bearer $token',
                 "content-type": "application/json",
               },
-              body: jsonEncode(qualification_ids))
+              body: jsonEncode(qualificationIds))
           .timeout(Duration(seconds: Constants.defaultTimeout));
 
       // fire and forget, we wachten niet op het eventuele resultaat,
