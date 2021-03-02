@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:diplomatik_app/models/student.dart';
 import 'package:diplomatik_app/providers/student_provider.dart';
-//import 'package:diplomatik_app/pages/student_page.dart';
+import 'package:diplomatik_app/pages/student_page.dart';
 //import 'package:diplomatik_app/pages/student_create_page.dart';
 
 class StudentsPage extends StatefulWidget {
@@ -64,34 +64,34 @@ class _StudentsPageState extends State<StudentsPage> {
         itemBuilder: (context, index) {
           return InkWell(
               // klik-actie voor tonen individueel item
-              // onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StudentPage(students[index].id)))
-              //     .then((_) => setState(() => {})),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StudentPage(students[index].id)))
+                  .then((_) => setState(() => {})),
               child: SizedBox(
                   child: Container(
-            child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      students[index].name,
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 18,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                    Text(
-                      students[index].studentNumber,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
-                )),
-          )));
+                child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          students[index].name,
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 18,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        Text(
+                          students[index].studentNumber,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    )),
+              )));
         },
         itemCount: students.length,
         shrinkWrap: true,

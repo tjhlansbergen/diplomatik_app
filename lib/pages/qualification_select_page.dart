@@ -8,14 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:diplomatik_app/common/constants.dart';
 import 'package:diplomatik_app/models/qualification.dart';
 import 'package:diplomatik_app/models/course.dart';
+import 'package:diplomatik_app/models/student.dart';
 import 'package:diplomatik_app/providers/qualification_provider.dart';
 import 'package:diplomatik_app/providers/course_provider.dart';
+import 'package:diplomatik_app/providers/student_provider.dart';
 
 class QualificationSelectPage extends StatefulWidget {
   final SelectionContext selectionContext;
   final Course course;
+  final Student student;
 
-  const QualificationSelectPage(this.selectionContext, {this.course});
+  const QualificationSelectPage(this.selectionContext, {this.course, this.student});
 
   @override
   _QualificationSelectPageState createState() => _QualificationSelectPageState();
@@ -51,7 +54,7 @@ class _QualificationSelectPageState extends State<QualificationSelectPage> {
                 return Center(child: Text(snapshot.error.toString()));
               else
                 // toont data als deze binnen is
-                return QualificationSelect(snapshot.data, widget.selectionContext, widget.course);
+                return QualificationSelect(snapshot.data, widget.selectionContext, widget.course, widget.student);
             }
           },
         ));
@@ -63,13 +66,20 @@ class QualificationSelect extends StatefulWidget {
   final List<Qualification> _items;
   final SelectionContext _selectionContext;
   final Course _course;
+  final Student _student;
 
   final _selected = Set<int>(); // lijst met (unieke) kwalificatie-id's
 
-  QualificationSelect(this._items, this._selectionContext, this._course) {
-    _course.qualifications.forEach((qualification) {
-      _selected.add(qualification.id);
-    });
+  QualificationSelect(this._items, this._selectionContext, this._course, this._student) {
+    if (_selectionContext == SelectionContext.course) {
+      _course.qualifications.forEach((qualification) {
+        _selected.add(qualification.id);
+      });
+    } else if (_selectionContext == SelectionContext.student) {
+      _student.qualifications.forEach((qualification) {
+        _selected.add(qualification.id);
+      });
+    }
   }
 
   @override
@@ -96,6 +106,8 @@ class _QualificationSelectState extends State<QualificationSelect> {
         break;
 
       case SelectionContext.student:
+        var studentProvider = new StudentProvider();
+        studentProvider.updateStudent(context, widget._student.id, widget._selected);
         break;
     }
 
