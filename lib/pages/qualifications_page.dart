@@ -111,7 +111,9 @@ class _QualificationsPageState extends State<QualificationsPage> {
                             color: Colors.black,
                             fontSize: 14,
                           ),
-                          textAlign: TextAlign.left,
+                        ),
+                        SizedBox(
+                          height: 4.0,
                         ),
                         Text(
                           qualifications[index].name,
@@ -119,7 +121,6 @@ class _QualificationsPageState extends State<QualificationsPage> {
                             color: Colors.blue,
                             fontSize: 18,
                           ),
-                          textAlign: TextAlign.left,
                         ),
                       ],
                     )),

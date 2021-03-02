@@ -10,6 +10,7 @@ import 'package:diplomatik_app/providers/identity_provider.dart';
 import 'package:diplomatik_app/pages/qualifications_page.dart';
 import 'package:diplomatik_app/pages/courses_page.dart';
 import 'package:diplomatik_app/pages/students_page.dart';
+import 'package:diplomatik_app/pages/users_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key key}) : super(key: key);
@@ -54,7 +55,7 @@ class HomePage extends StatelessWidget {
                     child: ElevatedButton.icon(
                         // schakelt accounts knop uit als ingelogde gebruiker geen gebruikersbeheerrechten heeft
                         onPressed: Provider.of<IdentityProvider>(context, listen: false).currentUser.canAddUsers
-                            ? () => print('Accounts')
+                            ? () => Navigator.push(context, MaterialPageRoute(builder: (_) => UsersPage()))
                             : null,
                         icon: Icon(Icons.supervisor_account),
                         label: Text("Accounts"))),

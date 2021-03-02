@@ -79,7 +79,9 @@ class _CoursesPageState extends State<CoursesPage> {
                             color: Colors.blue,
                             fontSize: 18,
                           ),
-                          textAlign: TextAlign.left,
+                        ),
+                        SizedBox(
+                          height: 4.0,
                         ),
                         Text(
                           courses[index].code,
@@ -87,7 +89,6 @@ class _CoursesPageState extends State<CoursesPage> {
                             color: Colors.black,
                             fontSize: 14,
                           ),
-                          textAlign: TextAlign.left,
                         ),
                       ],
                     )),

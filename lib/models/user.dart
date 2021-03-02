@@ -32,13 +32,18 @@ class User {
   // Methode deserializatie vanaf JSON object
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      userId: json['user_id'] as int,
-      userName: json['user_name'] as String,
+      userId: json['id'] as int,
+      userName: json['username'] as String,
       customerId: json['customer_id'] as int,
       customerName: json['customer_name'] as String,
       canAddUsers: json['can_add_users'] as bool,
       token: json['token'] as String,
     );
+  }
+
+  // Serialisatie naar JSON
+  Map<String, dynamic> toJson() {
+    return {'id': userId, 'username': userName, 'password': password, 'can_add_users': canAddUsers};
   }
 
   @override
