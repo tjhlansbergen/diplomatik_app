@@ -1,6 +1,7 @@
 // course_page.dart - Tako Lansbergen 2020/03/01
 //
 // Pagina voor tonen van één vak van de klant
+// overerft van StatefulWidget
 
 import 'package:flutter/material.dart';
 

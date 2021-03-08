@@ -1,6 +1,7 @@
 // qualification_page.dart - Tako Lansbergen 2020/02/27
 //
 // Pagina voor tonen van één kwalificatie van de klant
+// overerft van StatefulWidget
 
 import 'package:flutter/material.dart';
 

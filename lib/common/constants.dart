@@ -1,6 +1,6 @@
 // constants.dart - Tako Lansbergen 2020/02/23
 //
-// Constanten en helpers
+// Constanten en enums
 
 class Constants {
   // API instellingen

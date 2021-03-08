@@ -1,10 +1,10 @@
 // user_page.dart - Tako Lansbergen 2020/03/02
 //
 // Pagina voor tonen van één api gebruiker van de klant
+// overerft van StatefulWidget
 
 import 'package:flutter/material.dart';
 
-import 'package:diplomatik_app/common/constants.dart';
 import 'package:diplomatik_app/models/user.dart';
 import 'package:diplomatik_app/providers/user_provider.dart';
 

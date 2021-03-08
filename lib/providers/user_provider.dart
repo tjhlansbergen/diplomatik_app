@@ -1,6 +1,6 @@
 // user_provider.dart - Tako Lansbergen 2020/03/02
 //
-// Provider voor gebruikerbeheer gerelateerde API-calls
+// Provider voor gebruikersbeheer gerelateerde API-calls
 
 import 'dart:async';
 import 'dart:convert';
@@ -67,30 +67,6 @@ class UserProvider {
       throw 'server niet bereikbaar';
     }
   }
-
-  // // Methode voor toevoegen van gebruiker
-  // Future<void> updateUser(BuildContext context, int id, Set<int> qualifications) async {
-  //   try {
-  //     var token = Provider.of<IdentityProvider>(context, listen: false).currentUser.token;
-  //     var uri = Constants.studentsEndpoint + "/$id";
-  //     var qualificationIds = {"qualification_ids": qualifications.toList()};
-
-  //     // roep endpoint asynchroon aan
-  //     await http
-  //         .patch(uri,
-  //             headers: {
-  //               'Authorization': 'Bearer $token',
-  //               "content-type": "application/json",
-  //             },
-  //             body: jsonEncode(qualificationIds))
-  //         .timeout(Duration(seconds: Constants.defaultTimeout));
-
-  //     // fire and forget, we wachten niet op het eventuele resultaat,
-  //     // en laten het aan de server over om te bepalen of het request wel/niet uitgevoerd wordt
-  //   } on Exception {
-  //     // vang exceptions af en negeer ze
-  //   }
-  // }
 
   // Methode voor verwijderen van gebruiker
   Future<void> deleteUser(BuildContext context, int id) async {
