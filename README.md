@@ -1,16 +1,17 @@
-# diplomatik_app
+# README
 
-A new Flutter project.
+## diplomatik_app
 
-## Getting Started
+Flutter project voor de mobiele app voor eindgebruikers van Diplomatik. Gebouwd voor NOVI HBO ICT Software Development Praktijk IIII door Tako Lansbergen, studentnummer 800009968
 
-This project is a starting point for a Flutter application.
+- Dart versie 2.10.5
+- Flutter versie 1.22.6
 
-A few resources to get you started if this is your first Flutter project:
+## Opstarten
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- Ga naar https://flutter.dev/docs/get-started/install en doorloop de stappen 1) Install, 2) Setup an editor & 3) Test Drive
+- Start diploamtik_web met F5 (debugging) of ctrl-F5 (geen debugging)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+Om in de app in te kunnen loggen moet diplotik_web gestart zijn en beschikbaar zijn op http://localhost:3000
+Zie de meegeleverde documentatie voor uitgebreidere testinstructies
