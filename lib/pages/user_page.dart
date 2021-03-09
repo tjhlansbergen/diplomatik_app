@@ -4,9 +4,11 @@
 // overerft van StatefulWidget
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:diplomatik_app/models/user.dart';
 import 'package:diplomatik_app/providers/user_provider.dart';
+import 'package:diplomatik_app/providers/identity_provider.dart';
 
 class UserPage extends StatefulWidget {
   final int _id;
@@ -30,8 +32,13 @@ class _UserPageState extends State<UserPage> {
     var userProvider = new UserProvider();
     await userProvider.deleteUser(context, id);
 
-    // sluit pagina
+    // if (id == Provider.of<IdentityProvider>(context, listen: false).currentUser.userId) {
+    //   // gebruiker verwijderd zichzelf, log direct uit
+    //   Navigator.of(context).popUntil((route) => route.isFirst);
+    // } else {
+    // gebruiker verwijder andere gebruiker, sluit pagina
     Navigator.pop(context);
+    //}
   }
 
   @override
@@ -56,12 +63,14 @@ class _UserPageState extends State<UserPage> {
                 children: [
                   // toon data en verwijder-knop zodra de data binnen is
                   UserCard(snapshot.data),
-                  FlatButton(
-                      onPressed: () => removeUser(snapshot.data.userId),
-                      child: Text('App gebruiker verwijderen',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ))),
+                  // toon verwijder knop alleen voor andere gebruikers
+                  if (snapshot.data.userId != Provider.of<IdentityProvider>(context, listen: false).currentUser.userId)
+                    FlatButton(
+                        onPressed: () => removeUser(snapshot.data.userId),
+                        child: Text('App gebruiker verwijderen',
+                            style: TextStyle(
+                              color: Colors.red,
+                            ))),
                 ],
               );
           }
